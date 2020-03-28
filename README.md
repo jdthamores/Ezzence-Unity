@@ -17,6 +17,7 @@
 
 
 ### Arduino Instructions:
+
 This project contains the Arduino code to connect to Ezzence.
 Instructions to install the code in the device:
 
@@ -25,4 +26,8 @@ Instructions to install the code in the device:
 * **Tools > Manage Libraries >** “Arduino Low Power”. Arduino will also ask you to install RTCZero, Install all.
 * **Tools > Boards Manager >** Arduino SAMD Boards (32-bits ARM Cortex-M0+) by Arduino. 
 
-Restart Arduino and make sure that the Port is detecting Arduino/Genuino Zero and that the Board is with Native USB Port when plugging Ezzence.
+<img align="left" src="README_Pictures/README_picture2.png" width="300"/>
+
+Restart Arduino. **Turn on the prototype** and make sure that the **Port** is detecting Arduino/Genuino Zero and that the **Board** is with Native USB Port when plugging Ezzence.
+
+

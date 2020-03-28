@@ -1,9 +1,11 @@
 # Ezzence <-> Unity Bridge
-
 ## **Communication between Ezzence BLE and Unity**
+<img align="right" src="README_Pictures/README_picture_1.png" width="200"/>
 
 **The “EzzenceBasicBLE” Scene automatically connects to the Ezzence prototype and can release a burst of scent when the user presses the "Burst" button.**
 *Note: This project has been tested in MacOS and iOS. When testing in "Play" mode, add a new Aspect ratio for: iPhone 1334x750 Portrait 750x1334 and iPhone 1334x750 Landscape 1334x750 to visualize the UI.*
+
+
 
 ### iOS Deployment:
 

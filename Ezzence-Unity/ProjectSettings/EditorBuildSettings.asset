@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/EzzenceTest.unity
     guid: 9137c92bf0e15410b8b0a5e2634ed2b4
   - enabled: 1
-    path: Assets/Scenes/EzzenceBasicBLE.unity
+    path: Assets/EzzenceBasicBLE.unity
     guid: 7302f0afc1d4648f88dcfbd5c985dc76
   m_configObjects: {}

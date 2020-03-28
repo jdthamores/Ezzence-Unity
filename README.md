@@ -13,3 +13,14 @@
 
 * **Unity Project Settings:** Write a message for “Location usage Description”.
 
+
+### Arduino Instructions:
+This project contains the Arduino code to connect to Ezzence.
+Instructions to install the code in the device:
+
+**Install the following libraries in Arduino:**
+* **Tools > Manage Libraries >** Adafruit BluefruitLE nrF51 by Adafruit
+* **Tools > Manage Libraries >** “Arduino Low Power”. Arduino will also ask you to install RTCZero, Install all.
+* **Tools > Boards Manager >** Arduino SAMD Boards (32-bits ARM Cortex-M0+) by Arduino. 
+
+Restart Arduino and make sure that the Port is detecting Arduino/Genuino Zero and that the Board is with Native USB Port when plugging Ezzence.

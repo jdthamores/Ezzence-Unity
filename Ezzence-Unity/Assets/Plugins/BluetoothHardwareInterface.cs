@@ -38,10 +38,10 @@ public class BluetoothLEHardwareInterface
 	public enum CBCharacteristicProperties
 	{
 		CBCharacteristicPropertyBroadcast = 0x01,
-		CBCharacteristicPropertyRead = 0x02,
-		CBCharacteristicPropertyWriteWithoutResponse = 0x04,
-		CBCharacteristicPropertyWrite = 0x08,
-		CBCharacteristicPropertyNotify = 0x10,
+		CBCharacteristicPropertyRead = 0x0003,
+		CBCharacteristicPropertyWriteWithoutResponse = 0x02,
+		CBCharacteristicPropertyWrite = 0x0002,
+		CBCharacteristicPropertyNotify = 0x0003,
 		CBCharacteristicPropertyIndicate = 0x20,
 		CBCharacteristicPropertyAuthenticatedSignedWrites = 0x40,
 		CBCharacteristicPropertyExtendedProperties = 0x80,
@@ -84,18 +84,30 @@ public class BluetoothLEHardwareInterface
 #if UNITY_ANDROID
 	public enum CBAttributePermissions
 	{
-		CBAttributePermissionsReadable = 0x01,
-		CBAttributePermissionsWriteable = 0x10,
+		CBAttributePermissionsReadable = 0x0003,
+		CBAttributePermissionsWriteable = 0x0002,
 		CBAttributePermissionsReadEncryptionRequired = 0x02,
 		CBAttributePermissionsWriteEncryptionRequired = 0x20,
+
+		/*CBAttributePermissionsReadable = 0x01,
+		CBAttributePermissionsWriteable = 0x10,
+		CBAttributePermissionsReadEncryptionRequired = 0x02,
+		CBAttributePermissionsWriteEncryptionRequired = 0x20,*/
+
+		
 	};
 #else
 	public  enum CBAttributePermissions
 	{
-		CBAttributePermissionsReadable = 0x01,
+		CBAttributePermissionsReadable = 0x03,
 		CBAttributePermissionsWriteable = 0x02,
 		CBAttributePermissionsReadEncryptionRequired = 0x04,
 		CBAttributePermissionsWriteEncryptionRequired = 0x08,
+
+		/*CBAttributePermissionsReadable = 0x01,
+		CBAttributePermissionsWriteable = 0x02,
+		CBAttributePermissionsReadEncryptionRequired = 0x04,
+		CBAttributePermissionsWriteEncryptionRequired = 0x08,*/
 	};
 #endif
 
@@ -240,7 +252,7 @@ public class BluetoothLEHardwareInterface
 	public static void Log (string message)
 	{
 #if EXPERIMENTAL_MACOS_EDITOR && (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
-		Debug.Log(message);
+//		Debug.Log(message);
 #else
         if (!Application.isEditor)
 		{

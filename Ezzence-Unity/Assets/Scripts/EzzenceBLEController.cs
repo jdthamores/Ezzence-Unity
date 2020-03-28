@@ -26,13 +26,14 @@ public class EzzenceBLEController : MonoBehaviour
 {
 	public string DeviceName = "Ezzence";
 	public string ServiceUUID = "6E400001-B5A3-F393-­E0A9-­E50E24DCCA9E"; //Base UUID 0001
-	public string Characteristic = "6E400002-B5A3-F393-­E0A9-­E50E24DCCA9E"; //TX UUID 0x0002 (Write)
-	public string CharacteristicRX = "6E400003-B5A3-F393-­E0A9-­E50E24DCCA9E"; //RX UUID 0x003 (Read)
+	public string Characteristic = "6E400002-B5A3-F393-­E0A9-­E50E24DCCA9E"; //TX UUID 0x0002 (Write to Ezzence)
+	public string CharacteristicRX = "6E400003-B5A3-F393-­E0A9-­E50E24DCCA9E"; //RX UUID 0x003 (Read from Ezzence)
 
 	public Text Ezzence_Status;
 	public Text BluetoothStatus;
 	public GameObject PanelMiddle;
 	public Text TextToSend;
+	public string messageEzzence;
 
 	enum States
 	{
@@ -169,52 +170,87 @@ public class EzzenceBLEController : MonoBehaviour
 					_foundID = false;
 
 					Ezzence_Status.text = "Connecting to Ezzence";
+					Debug.Log ("Connection to ..." + DeviceName + "with address: " + _ezzence + ", in progress... \n");
+					BluetoothStatus.text ="Connection to ..." + DeviceName + "with address: " + _ezzence + ", in progress... \n";
 
+					//_ezzence = string name, null = Action <string> connectAction, null = Action<string, string> serviceAction, characteristicAction = Action<string, string, string> 
 					BluetoothLEHardwareInterface.ConnectToPeripheral (_ezzence, null, null, (address, serviceUUID, characteristicUUID) => {
-						BluetoothStatus.text = serviceUUID +","+ ServiceUUID;
+						Debug.Log("Conect to Peripheral: serviceUUID: "+serviceUUID +", characteristicUUID: "+characteristicUUID);
+						BluetoothStatus.text = "Is equal? "+serviceUUID +","+ ServiceUUID;
 
 						if (IsEqual (serviceUUID, ServiceUUID))
 						{
-							BluetoothStatus.text = "Found service. Set the state.";
-							Ezzence_Status.text = "Found service. Set the state.";
+							Debug.Log("Found service.");
+							BluetoothStatus.text = "Found service.";
+							Ezzence_Status.text = "Found service.";
 
 							// if we have found the characteristic that we are waiting for
 							// set the state. make sure there is enough timeout that if the
 							// device is still enumerating other characteristics it finishes
 							// before we try to subscribe
+							
+							_connected = true;
+							BluetoothStatus.text = "UUID: "+characteristicUUID + "Send: "+Characteristic + "Receive: "+CharacteristicRX;
+							//Debug.Log ("UUID: "+characteristicUUID + ". Send: "+Characteristic + ". Receive: "+CharacteristicRX);
 
 							if (IsEqual (characteristicUUID, Characteristic))
 							{
-								BluetoothStatus.text = "Found characteristic. CONNECTED!";
-								Ezzence_Status.text = "Found characteristic. CONNECTED!.";
-								_connected = true;
+								BluetoothStatus.text = "Send characteristic. CONNECTED!";
+								Ezzence_Status.text = "Send characteristic. CONNECTED!.";
+								Debug.Log ("Send characteristic. CONNECTED!.");
 								SetState (States.Subscribe, 2f);
 							}
+
+							if (IsEqual (characteristicUUID, CharacteristicRX))
+							{
+								BluetoothStatus.text = "Receive characteristic. CONNECTED!";
+								Ezzence_Status.text = "RX Characteristic. SUBSCRIBE!";
+								Debug.Log ("RX Characteristic. SUBSCRIBE!");
+								SetState (States.Subscribe, 2f);
+							}
+
 						}
+						// disconnectedAddress = Action<string> disconnectAction
 					}, (disconnectedAddress) => {
 						BluetoothLEHardwareInterface.Log ("Device disconnected: " + disconnectedAddress);
 						Ezzence_Status.text = "Disconnected";
+						Debug.Log ("Disconnected");
 					});
 					break;
 
 				case States.Subscribe:
 					BluetoothStatus.text = "Subscribing to Ezzence";
 					Ezzence_Status.text = "Subscribing to Ezzence";
+					Debug.Log("Subscribing to Ezzence");
 
-					BluetoothLEHardwareInterface.SubscribeCharacteristicWithDeviceAddress (_ezzence, ServiceUUID, Characteristic, null, (address, characteristicUUID, bytes) => {
-						BluetoothStatus.text = "Received Serial: " + Encoding.UTF8.GetString (bytes);
-						Ezzence_Status.text = "Received Serial: " + Encoding.UTF8.GetString (bytes);
+					//Receive data from Ezzence
+					//It receives IMU data with the following format I specified in Arduino: [t:millis(),X:AcX,Y:AcY,Z:AcZ]
+					//millis() = time, AcX = X axis accelerometer, AcY = Y axis accelerometer, AcZ = Z axis accelerometer.
+      
+					//"time" returns the number of milliseconds passed since the Ezzence board began running the current program. This number will overflow (go back to zero), after approximately 50 days.
+
+					//Note: BLE is limited to 20 bytes in a single BLE packet. 
+					//It automatically break larger strings up into 20 byte or smaller packets and send multiple packets over the air. 
+			
+					
+					BluetoothLEHardwareInterface.SubscribeCharacteristicWithDeviceAddress (_ezzence, ServiceUUID, CharacteristicRX, null, (address, characteristicUUID, bytes) => {
+						BluetoothStatus.text = Encoding.UTF8.GetString (bytes);
+						Ezzence_Status.text = Encoding.UTF8.GetString (bytes);
+						print(Encoding.UTF8.GetString (bytes));
+						messageEzzence = Encoding.UTF8.GetString (bytes);
+						print("Stream Data: " +messageEzzence);
+
 					});
 
 					// set to the none state and the user can start sending and receiving data
 					_state = States.None;
-					Ezzence_Status.text = "Waiting...";
+					//Ezzence_Status.text = "Waiting...";
 					BluetoothStatus.text = "Start sending and receiving data...";
 
 					PanelMiddle.SetActive (true);
 					break;
 
-				/*case States.Unsubscribe:
+				case States.Unsubscribe:
 					BluetoothLEHardwareInterface.UnSubscribeCharacteristic (_ezzence, ServiceUUID, Characteristic, null);
 					SetState (States.Disconnect, 4f);
 					break;
@@ -238,7 +274,7 @@ public class EzzenceBLEController : MonoBehaviour
 							_state = States.None;
 						});
 					}
-					break;*/
+					break;
 				}
 			}
 		}

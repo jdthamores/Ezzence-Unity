@@ -68,14 +68,9 @@ public class EzzenceBLEController : MonoBehaviour
 				SendString (TextToSend.text);
 			}
 		}
-		if (button.name.Contains("Toggle"))
-		{
-			//SendByte (0x01);
-			SendString ("!B516");
-		}
 		if (button.name.Contains("Burst"))
 		{
-			//SendByte (0x01);
+			//print("Button Pressed");
 			SendString ("!B516");
 		}
 	}
@@ -224,9 +219,9 @@ public class EzzenceBLEController : MonoBehaviour
 					Debug.Log("Subscribing to Ezzence");
 
 					//Receive data from Ezzence
-					//It receives IMU data with the following format I specified in Arduino: [t:millis(),X:AcX,Y:AcY,Z:AcZ]
-					//millis() = time, AcX = X axis accelerometer, AcY = Y axis accelerometer, AcZ = Z axis accelerometer.
-      
+					//It receives IMU data with the following format I specified in Arduino: 
+					//[t:millis(),AccX:valueAccelerometerX,AccY:valueAccelerometerY,AccZ:valueAccelerometerZ,GyX:valueGyroscopeX,GyY:valueGyroscopeY,GyZ:valueGyroscopeZ,
+					//millis() = time,
 					//"time" returns the number of milliseconds passed since the Ezzence board began running the current program. This number will overflow (go back to zero), after approximately 50 days.
 
 					//Note: BLE is limited to 20 bytes in a single BLE packet. 
@@ -236,7 +231,7 @@ public class EzzenceBLEController : MonoBehaviour
 					BluetoothLEHardwareInterface.SubscribeCharacteristicWithDeviceAddress (_ezzence, ServiceUUID, CharacteristicRX, null, (address, characteristicUUID, bytes) => {
 						BluetoothStatus.text = Encoding.UTF8.GetString (bytes);
 						Ezzence_Status.text = Encoding.UTF8.GetString (bytes);
-						print(Encoding.UTF8.GetString (bytes));
+						//print(Encoding.UTF8.GetString (bytes));
 						messageEzzence = Encoding.UTF8.GetString (bytes);
 						print("Stream Data: " +messageEzzence);
 

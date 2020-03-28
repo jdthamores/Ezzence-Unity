@@ -178,12 +178,18 @@ void loop(void)
       ble.flush();
       ble.print("[t:");
       ble.print(millis());
-      ble.print(",X:");
+      ble.print(",AccX:");
       ble.print(AcX);
-      ble.print(",Y:");
+      ble.print(",AccY:");
       ble.print(AcY);
-      ble.print(",Z:");
+      ble.print(",AccZ:");
       ble.print(AcZ);
+      ble.print(",GyX:");
+      ble.print(GyX);
+      ble.print(",GyY:");
+      ble.print(GyY);
+      ble.print(",GyZ:");
+      ble.print(GyZ);   
       ble.print("]");
       
       ble.flush();
@@ -366,9 +372,9 @@ void readAndDisplayIMUdata(){
   AcY=Wire.read()<<8|Wire.read();  // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
   AcZ=Wire.read()<<8|Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
  // Tmp=Wire.read()<<8|Wire.read();  // 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L)
- // GyX=Wire.read()<<8|Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
- // GyY=Wire.read()<<8|Wire.read();  // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
- // GyZ=Wire.read()<<8|Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
+  GyX=Wire.read()<<8|Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
+  GyY=Wire.read()<<8|Wire.read();  // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
+  GyZ=Wire.read()<<8|Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
   
   if (DEBUG_SERIAL_PRINT) { 
       Serial.print(" IMU Data Start:");

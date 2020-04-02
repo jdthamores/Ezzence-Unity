@@ -1,3 +1,9 @@
 [submodule "Ezzence-Unity/Assets/Modules/Ezzence-Module-In-exhale"]
 	path = Ezzence-Unity/Assets/Modules/Ezzence-Module-In-exhale
 	url = https://github.com/jdthamores/Ezzence-Module-In-exhale/
+[submodule "Ezzence-Unity/Assets/Modules/MuseS-Unity"]
+	path = Ezzence-Unity/Assets/Modules/MuseS-Unity
+	url = https://github.com/jdthamores/MuseS-Unity
+[submodule "Ezzence-Unity/Assets/Modules/Module-MuseS-Unity"]
+	path = Ezzence-Unity/Assets/Modules/Module-MuseS-Unity
+	url = https://github.com/jdthamores/Module-MuseS-Unity
